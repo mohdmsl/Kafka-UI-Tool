@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0"
+            prefWidth="1800.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.PrimaryController">
+    <top>
+        <MenuBar BorderPane.alignment="CENTER">
+            <menus>
+                <Menu mnemonicParsing="false" text="File">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Close"/>
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Edit">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Delete"/>
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="About"/>
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </top>
+    <left>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="800.0" prefWidth="400.0">
+            <padding>
+                <Insets top="1.0"/>
+            </padding>
+            <children>
+                <TitledPane animated="false" prefHeight="800.0" prefWidth="400.0" text="Topics">
+                    <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                            <children>
+                                <ListView fx:id="topics" fixedCellSize="0.0" maxHeight="-Infinity" maxWidth="-Infinity"
+                                          onMouseClicked="#showData" prefHeight="799.0" prefWidth="400.0"/>
+                            </children>
+                        </AnchorPane>
+                    </content>
+                </TitledPane>
+            </children>
+        </AnchorPane>
+    </left>
+    <center>
+        <Pane prefHeight="200.0" prefWidth="1600.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label contentDisplay="CENTER" focusTraversable="false" prefHeight="36.0" prefWidth="100.0"
+                       text="Bootstrap:" textAlignment="CENTER" translateX="20.0" translateY="50.0">
+                    <font>
+                        <Font size="16.0"/>
+                    </font>
+                </Label>
+                <TextField fx:id="btServer" prefHeight="34.0" prefWidth="327.0" promptText="Bootstrap Servers"
+                           translateX="138.0" translateY="50.0"/>
+                <Button fx:id="connect" layoutX="226.0" layoutY="97.0" mnemonicParsing="false" onMouseClicked="#connect"
+                        text="Connect">
+                    <font>
+                        <Font size="16.0"/>
+                    </font>
+                </Button>
+                <Button fx:id="disconnect" layoutX="349.0" layoutY="97.0" mnemonicParsing="false" text="Disconnect">
+                    <font>
+                        <Font size="16.0"/>
+                    </font>
+                </Button>
+            </children>
+        </Pane>
+    </center>
+</BorderPane>
