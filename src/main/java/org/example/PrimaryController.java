@@ -4,8 +4,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import org.apache.kafka.clients.admin.AdminClient;
 import org.example.models.Kafka;
+import org.example.topic.TopicUtil;
 import org.example.utility.TopicUtils;
+import org.example.utility.Utils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,10 +21,11 @@ public class PrimaryController {
     @FXML
     TextField btServer;
     @FXML
-    ListView topics;
+    ListView<String> topics;
     @FXML
     ChoiceBox formatter;
 
+    TopicUtil topicUtil;
 
     @FXML
     private void connect() {
@@ -45,7 +49,7 @@ public class PrimaryController {
     @FXML
     private void showData(MouseEvent event) {
         if (event.getButton() == MouseButton.SECONDARY) {
-            Kafka.topicName = topics.getSelectionModel().getSelectedItem().toString();
+            Kafka.topicName = topics.getSelectionModel().getSelectedItem();
             openMenu();
         }
 
@@ -55,10 +59,15 @@ public class PrimaryController {
 
         //System.out.println("dragged");
         ContextMenu cMenu = new ContextMenu();
-        MenuItem topicMenu = new MenuItem("topic Info");
+        MenuItem topicInfo = new MenuItem("topic Info");
         MenuItem dataMenu = new MenuItem("display data");
-        topicMenu.setOnAction((event) -> {
-
+        MenuItem deleteMenu = new MenuItem("delete Topic");
+        topicInfo.setOnAction((event) -> {
+            try {
+                App.setRoot("topicInfo");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
         dataMenu.setOnAction(actionEvent -> {
             try {
@@ -67,11 +76,15 @@ public class PrimaryController {
                 e.printStackTrace();
             }
         });
-        cMenu.getItems().addAll(topicMenu, dataMenu);
+        deleteMenu.setOnAction(event -> {
+            topicUtil = new TopicUtil();
+            String topic = topics.getSelectionModel().getSelectedItem();
+            AdminClient adminClient = AdminClient.create(Utils.config);
+            topicUtil.deleteTopic(topic, adminClient);
+        });
+        cMenu.getItems().addAll(topicInfo, dataMenu,deleteMenu);
         topics.setContextMenu(cMenu);
     }
-
-
 
 
 }

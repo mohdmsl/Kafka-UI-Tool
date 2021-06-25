@@ -25,6 +25,7 @@ public class App extends Application {
         scene = new Scene(loadFXML("primary"));
         stage.setScene(scene);
         stage.show();
+        System.setProperty("APPLCATION_ID", "kafka_UI");
     }
 
     static void setRoot(String fxml) throws IOException {
