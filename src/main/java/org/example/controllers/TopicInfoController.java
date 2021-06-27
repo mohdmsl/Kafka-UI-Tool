@@ -1,4 +1,4 @@
-package org.example;
+package org.example.controllers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -8,14 +8,17 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.TopicPartition;
+import org.example.App;
 import org.example.consumer.Consumer;
 import org.example.models.Kafka;
 import org.example.models.Partition;
-import org.example.topic.TopicUtil;
+import org.example.topic.Topic;
 import org.example.utility.Utils;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
@@ -35,16 +38,20 @@ public class TopicInfoController implements Initializable {
     @FXML
     TableColumn<Partition, Long> totalRecords;
 
+    AdminClient adminClient;
+
+    Properties config ;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        config = new Utils().getConfig();
+        adminClient = AdminClient.create(config);
         getTotalMessages();
     }
 
     @FXML
     public void getTotalMessages() {
-        Properties config = new Utils().getKafkaProps();
-        KafkaConsumer<String, String> kafkaConsumer = new Consumer().getConsumer(Kafka.topicName);
-        TopicUtil tUtil = new TopicUtil();
+        KafkaConsumer<String, String> kafkaConsumer = new Consumer(adminClient).getConsumer(Kafka.topicName);
+        Topic tUtil = new Topic(adminClient);
         int partitionSize = tUtil.getNumberOfPartitions(Kafka.topicName, config);
         List<TopicPartition> partitions = new ArrayList<>();
         while (--partitionSize >= 0) {
@@ -66,10 +73,8 @@ public class TopicInfoController implements Initializable {
         endOffset.setCellValueFactory(new PropertyValueFactory<Partition, Long>("endOffset"));
         totalRecords.setCellValueFactory(new PropertyValueFactory<Partition, Long>("records"));
         ObservableList<Partition> partitionList = FXCollections.observableArrayList();
-
-        Properties config = new Utils().getKafkaProps();
-        KafkaConsumer<String, String> kafkaConsumer = new Consumer().getConsumer(Kafka.topicName);
-        TopicUtil tUtil = new TopicUtil();
+        KafkaConsumer<String, String> kafkaConsumer = new Consumer(adminClient).getConsumer(Kafka.topicName);
+        Topic tUtil = new Topic(adminClient);
         int partitionSize = tUtil.getNumberOfPartitions(Kafka.topicName, config);
         List<TopicPartition> partitions = new ArrayList<>();
         for (int i = 0; i < partitionSize; i++) {
@@ -87,7 +92,14 @@ public class TopicInfoController implements Initializable {
         }
 
         partitionTable.setItems(partitionList);
+    }
 
-
+    @FXML
+    public void switchToPrimary(){
+        try {
+            App.setRoot("primary");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

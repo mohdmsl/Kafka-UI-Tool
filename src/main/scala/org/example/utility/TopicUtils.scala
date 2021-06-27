@@ -58,7 +58,6 @@ object TopicUtils {
   }
 
   def getAllTopics(config: Properties): util.Set[String] = {
-    println(config + "ss")
     val adminClient: AdminClient = AdminClient.create(config)
     adminClient.listTopics.names.get
   }

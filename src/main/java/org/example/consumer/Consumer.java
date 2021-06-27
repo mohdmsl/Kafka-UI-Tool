@@ -1,8 +1,9 @@
 package org.example.consumer;
 
+import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.TopicPartition;
-import org.example.topic.TopicUtil;
+import org.example.topic.Topic;
 import org.example.utility.Utils;
 
 import java.util.ArrayList;
@@ -11,6 +12,12 @@ import java.util.Map;
 import java.util.Properties;
 
 public class Consumer {
+
+    AdminClient adminClient;
+
+    public Consumer(AdminClient adminClient) {
+        this.adminClient = adminClient;
+    }
 
     public KafkaConsumer<String, String> getConsumer(String topic) {
 
@@ -22,7 +29,7 @@ public class Consumer {
     public KafkaConsumer<String, String> getConsumerFromStartOffset(String topic) {
         Properties config = new Utils().getKafkaProps();
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(new Utils().getKafkaProps());
-        int numberOfPartitions = new TopicUtil().getNumberOfPartitions(topic, config);
+        int numberOfPartitions = new Topic(this.adminClient).getNumberOfPartitions(topic, config);
         List<TopicPartition> list = new ArrayList<>();
         for (int i = 0; i < numberOfPartitions; i++) {
             list.add(new TopicPartition(topic, i));
@@ -35,7 +42,7 @@ public class Consumer {
     public KafkaConsumer<String, String> getConsumerFromSpecifiedOffset(String topic, Map<Integer, Long> offsets) {
         Properties config = new Utils().getKafkaProps();
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(new Utils().getKafkaProps());
-        int numberOfPartitions = new TopicUtil().getNumberOfPartitions(topic, config);
+        int numberOfPartitions = new Topic(this.adminClient).getNumberOfPartitions(topic, config);
         for (int i = 0; i < numberOfPartitions; i++) {
             TopicPartition topicPartition = new TopicPartition(topic, i);
             Long offset = offsets.getOrDefault(i, 0l);

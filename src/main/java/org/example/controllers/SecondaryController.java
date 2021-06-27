@@ -1,4 +1,4 @@
-package org.example;
+package org.example.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.beans.value.ChangeListener;
@@ -12,12 +12,16 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.example.Alerts;
+import org.example.App;
 import org.example.consumer.Consumer;
 import org.example.models.Data;
 import org.example.models.Kafka;
+import org.example.utility.Utils;
 import org.json.JSONObject;
 import org.json.XML;
 
@@ -50,6 +54,7 @@ public class SecondaryController implements Initializable {
     ChoiceBox<Integer> noofmsgs;
 
     String record;
+    AdminClient adminClient;
 
     @FXML
     private void switchToPrimary() throws IOException {
@@ -58,7 +63,7 @@ public class SecondaryController implements Initializable {
 
     @FXML
     private void loadData() {
-        Consumer consumer = new Consumer();
+        Consumer consumer = new Consumer(adminClient);
         KafkaConsumer<String, String> kafkaConsumer = consumer.getConsumerFromStartOffset(Kafka.topicName);
         data.setCellValueFactory(new PropertyValueFactory<Data, String>("data"));
         timestamp.setCellValueFactory(new PropertyValueFactory<Data, Long>("timestamp"));
@@ -79,6 +84,8 @@ public class SecondaryController implements Initializable {
                         break;
                     } else {
                         ConsumerRecord<String, String> record = itr.next();
+                        System.out.println(record.value());
+
                         Data data = new Data(record.value(), record.timestamp(), record.offset(), record.partition());
                         dataList.add(data);
                     }
@@ -87,7 +94,7 @@ public class SecondaryController implements Initializable {
                 count = 0;
             } else {
                 count++;
-                if (count > 3)
+                if (count > 50)
                     break;
             }
             if (isCompleted)
@@ -116,9 +123,6 @@ public class SecondaryController implements Initializable {
 
     @FXML
     private void recordFormatter() {
-        // ObservableList<String> oList = FXCollections.observableArrayList("Json", "Text", "XML");
-
-        // formatter.setItems(oList);
         formatter.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String oldValue, String newValue) {
@@ -151,6 +155,7 @@ public class SecondaryController implements Initializable {
 
         noofmsgs.getItems().addAll(10, 50, 100, 200, 300, 400, 500);
         noofmsgs.setValue(100);
+        adminClient = AdminClient.create(new Utils().getKafkaProps());
 
     }
 
@@ -159,7 +164,7 @@ public class SecondaryController implements Initializable {
         File file = new FileChooser().showSaveDialog(new Stage());
         try {
             if (file != null) {
-                Consumer consumer = new Consumer();
+                Consumer consumer = new Consumer(adminClient);
                 KafkaConsumer<String, String> kafkaConsumer = consumer.getConsumerFromStartOffset(Kafka.topicName);
                 int count = 0;
                 PrintWriter pw = new PrintWriter(file);
