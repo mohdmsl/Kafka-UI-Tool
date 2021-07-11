@@ -24,3 +24,23 @@
     -fx-scale-y: 0.9;
     -fx-scale-x: 0.9;
 }
+
+.onHover{
+    -fx-background-color: #03A9F4;
+}
+
+.chart-bar {
+    -fx-bar-fill: #0277BD;
+}
+
+#connect{
+ background-color: #04AA6D;
+  border: none;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+}

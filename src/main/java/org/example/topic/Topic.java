@@ -2,6 +2,8 @@ package org.example.topic;
 
 import org.apache.kafka.clients.admin.*;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.common.TopicPartition;
+import org.example.utility.Utils;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
@@ -95,5 +97,16 @@ public class Topic {
         NewTopic newTopic = new NewTopic(topic, partitionCount, rf);
         Set<NewTopic> topics = Collections.singleton(newTopic);
         CreateTopicsResult createTopicsResult = adminClient.createTopics(topics);
+    }
+
+    public Offsets getOffsets(String topic) {
+        Properties config = new Utils().getKafkaProps();
+        KafkaConsumer<String, String> consumer = new KafkaConsumer<>(config);
+        int numberOfPartitions = getNumberOfPartitions(topic, config);
+        List<TopicPartition> partitions = new ArrayList<>();
+        for (int i = 0; i < numberOfPartitions; i++) {
+            partitions.add(new TopicPartition(topic, i));
+        }
+        return new Offsets(consumer.beginningOffsets(partitions), consumer.endOffsets(partitions));
     }
 }

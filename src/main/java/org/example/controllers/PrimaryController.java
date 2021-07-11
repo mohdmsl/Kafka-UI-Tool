@@ -15,7 +15,6 @@ import org.example.controller.Database;
 import org.example.models.Kafka;
 import org.example.topic.Broker;
 import org.example.topic.Topic;
-import org.example.utility.TopicUtils;
 import org.example.utility.Utils;
 
 import java.io.IOException;
@@ -125,7 +124,7 @@ public class PrimaryController implements Initializable {
 
     @FXML
     private void refreshTopics() {
-        Set<String> topics = TopicUtils.getAllTopics(config);
+        Set<String> topics = topic.getAllTopics();
         showTopic(topics);
     }
 
@@ -184,6 +183,5 @@ public class PrimaryController implements Initializable {
     private boolean findTopics(String topic, String searchText) {
         return (topic.toLowerCase().contains(searchText.toLowerCase()));
     }
-
 
 }

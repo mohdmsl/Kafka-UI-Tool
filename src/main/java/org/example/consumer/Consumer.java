@@ -1,15 +1,15 @@
 package org.example.consumer;
 
 import org.apache.kafka.clients.admin.AdminClient;
+import org.apache.kafka.clients.consumer.ConsumerRebalanceListener;
+import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.TopicPartition;
 import org.example.topic.Topic;
 import org.example.utility.Utils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.time.Duration;
+import java.util.*;
 
 public class Consumer {
 
@@ -28,7 +28,7 @@ public class Consumer {
 
     public KafkaConsumer<String, String> getConsumerFromStartOffset(String topic) {
         Properties config = new Utils().getKafkaProps();
-        KafkaConsumer<String, String> consumer = new KafkaConsumer<>(new Utils().getKafkaProps());
+        KafkaConsumer<String, String> consumer = new KafkaConsumer<>(config);
         int numberOfPartitions = new Topic(this.adminClient).getNumberOfPartitions(topic, config);
         List<TopicPartition> list = new ArrayList<>();
         for (int i = 0; i < numberOfPartitions; i++) {
@@ -39,14 +39,33 @@ public class Consumer {
         return consumer;
     }
 
-    public KafkaConsumer<String, String> getConsumerFromSpecifiedOffset(String topic, Map<Integer, Long> offsets) {
+    public KafkaConsumer<String, String> getConsumerFromSpecifiedOffset(String topic, Map<TopicPartition, Long> offsets) {
         Properties config = new Utils().getKafkaProps();
-        KafkaConsumer<String, String> consumer = new KafkaConsumer<>(new Utils().getKafkaProps());
-        int numberOfPartitions = new Topic(this.adminClient).getNumberOfPartitions(topic, config);
-        for (int i = 0; i < numberOfPartitions; i++) {
-            TopicPartition topicPartition = new TopicPartition(topic, i);
-            Long offset = offsets.getOrDefault(i, 0l);
-            consumer.seek(topicPartition, offset);
+        KafkaConsumer<String, String> consumer = new KafkaConsumer<>(config);
+        List<String> topics = new ArrayList<>();
+        topics.add(topic);
+        consumer.subscribe(topics, new ConsumerRebalanceListener() {
+            @Override
+            public void onPartitionsRevoked(Collection<TopicPartition> partitions) {}
+
+            @Override
+            public void onPartitionsAssigned(Collection<TopicPartition> partitions) {
+                if (!offsets.isEmpty()) {
+                    offsets.forEach(consumer::seek);
+                } else {
+                    consumer.seekToBeginning(partitions);
+                }
+            }
+        });
+        Set<TopicPartition> assignment = new HashSet<>();
+        while (assignment.size() == 0) {
+            consumer.poll(Duration.ofMillis(100));
+            assignment = consumer.assignment();
+        }
+        ConsumerRecords<String, String> recordTemp = consumer.poll(Duration.ofMillis(100));
+        System.out.println(recordTemp.isEmpty());
+        for (Map.Entry<TopicPartition, Long> entry : offsets.entrySet()) {
+            consumer.seek(new TopicPartition(topic, entry.getKey().partition()), entry.getValue());
         }
         return consumer;
     }

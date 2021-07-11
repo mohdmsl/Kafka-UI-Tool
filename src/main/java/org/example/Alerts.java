@@ -44,4 +44,11 @@ public class Alerts {
         Optional<ButtonType> option = alert.showAndWait();
         return ButtonType.OK.equals(option.get());
     }
+
+    public void createSuccess( String message){
+        Alert aLert = new Alert(Alert.AlertType.INFORMATION);
+        aLert.setTitle("Alert");
+        TextArea area = new TextArea(message);
+        aLert.showAndWait();
+    }
 }
