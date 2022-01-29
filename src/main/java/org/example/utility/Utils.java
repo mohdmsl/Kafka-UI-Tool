@@ -1,6 +1,11 @@
 package org.example.utility;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 import org.apache.kafka.common.config.SslConfigs;
+import org.example.App;
 import org.example.models.Kafka;
 
 import java.io.IOException;
@@ -9,6 +14,7 @@ import java.util.Properties;
 
 public class Utils {
     public static Properties config;
+    private static Scene scene;
 
     public Properties getKafkaProps() {
         InputStream reader = null;
@@ -70,4 +76,35 @@ public class Utils {
         }
         return config;
     }
+
+    public void createNewScene(String fxmlName, Stage stage) {
+        stage.setTitle("KafkaUI Tool");
+        Parent root = null;
+        try {
+            root = new FXMLLoader(App.class.getResource(fxmlName + ".fxml")).load();
+            scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        finally {
+            root = null;
+        }
+
+    }
+
+    public void switchScene(String fxmlName) {
+        Parent root = null;
+        try {
+            root = new FXMLLoader(App.class.getResource(fxmlName + ".fxml")).load();
+            scene.setRoot(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            root = null;
+        }
+    }
+
+
 }

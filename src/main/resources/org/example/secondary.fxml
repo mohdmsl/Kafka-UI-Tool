@@ -8,13 +8,13 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controllers.SecondaryController">
+<BorderPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controllers.SecondaryController">
     <center>
-        <TabPane>
+        <TabPane prefWidth="1800.0">
             <Tab closable="false" text="Data">
                 <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" BorderPane.alignment="CENTER">
                     <items>
-                        <AnchorPane minHeight="4.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                        <AnchorPane  minHeight="4.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                             <children>
                                 <TableView fx:id="table" layoutY="-9.0" onKeyPressed="#displayRecordOnKeyPressed" onMouseClicked="#displayRecord" prefHeight="344.0" prefWidth="1393.0" tableMenuButtonVisible="true" translateY="35.0">
                                     <columns>

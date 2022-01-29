@@ -40,7 +40,8 @@ public class TopicInfoController implements Initializable {
 
     AdminClient adminClient;
 
-    Properties config ;
+    Properties config;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         config = new Utils().getConfig();
@@ -95,11 +96,8 @@ public class TopicInfoController implements Initializable {
     }
 
     @FXML
-    public void switchToPrimary(){
-        try {
-            App.setRoot("primary");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void switchToPrimary() {
+        new Utils().switchScene("primary");
+
     }
 }

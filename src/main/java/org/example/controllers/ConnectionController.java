@@ -11,6 +11,7 @@ import org.example.Alerts;
 import org.example.App;
 import org.example.controller.Database;
 import org.example.models.Kafka;
+import org.example.utility.Utils;
 
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -113,19 +114,15 @@ public class ConnectionController implements Initializable {
 
     @FXML
     private void connect() {
-        try {
-            Kafka.bootstrapServer = bootstrap.getText();
-            Kafka.ksLocation = ksLocation.getText();
-            Kafka.ksPassword = ksPassword.getText();
-            Kafka.tsLocation = tsLocation.getText();
-            Kafka.tsPassword = tsPassword.getText();
-            Kafka.mechanism = mechanism.getValue();
-            Kafka.keyPassword = keyPassword.getText();
-            Kafka.checkbox = checkbox.isSelected();
-            App.setRoot("primary");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Kafka.bootstrapServer = bootstrap.getText();
+        Kafka.ksLocation = ksLocation.getText();
+        Kafka.ksPassword = ksPassword.getText();
+        Kafka.tsLocation = tsLocation.getText();
+        Kafka.tsPassword = tsPassword.getText();
+        Kafka.mechanism = mechanism.getValue();
+        Kafka.keyPassword = keyPassword.getText();
+        Kafka.checkbox = checkbox.isSelected();
+        new Utils().switchScene("primary");
     }
 
     @FXML
@@ -139,13 +136,23 @@ public class ConnectionController implements Initializable {
                 host.setText(rs.getString("zookeeperHost"));
                 port.setText(rs.getString("zookeeperPort"));
                 bootstrap.setText(rs.getString("bootstrapServer"));
-                ksLocation.setText(rs.getString("keystoreLocation"));
-                ksPassword.setText(rs.getString("keyStorePassword"));
-                tsLocation.setText(rs.getString("truststoreLocation"));
-                tsPassword.setText(rs.getString("truststorePassword"));
                 mechanism.setValue(rs.getString("mechanism"));
-                keyPassword.setText(rs.getString("keyPassword"));
-                checkbox.setSelected(rs.getBoolean("identificationAlgorithm"));
+                if (!rs.getString("mechanism").equals("SSL")){
+                    ksLocation.setText("");
+                    ksPassword.setText("");
+                    tsLocation.setText("");
+                    tsPassword.setText("");
+                    keyPassword.setText("");
+                    checkbox.setSelected(false);
+                }
+                else {
+                    ksLocation.setText(rs.getString("keystoreLocation"));
+                    ksPassword.setText(rs.getString("keyStorePassword"));
+                    tsLocation.setText(rs.getString("truststoreLocation"));
+                    tsPassword.setText(rs.getString("truststorePassword"));
+                    keyPassword.setText(rs.getString("keyPassword"));
+                    checkbox.setSelected(rs.getBoolean("identificationAlgorithm"));
+                }
 
             }
 

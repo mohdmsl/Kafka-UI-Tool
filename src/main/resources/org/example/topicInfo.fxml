@@ -4,19 +4,13 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controllers.TopicInfoController">
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controllers.TopicInfoController">
   <tabs>
     <Tab text="Topic Details">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>
                   <Label layoutX="49.0" layoutY="61.0" prefHeight="16.0" prefWidth="127.0" text="Total Records" />
-                  <Button layoutX="341.0" layoutY="313.0" mnemonicParsing="false" text="Connect" />
-                  <Button layoutX="420.0" layoutY="313.0" mnemonicParsing="false" text="Save" />
-                  <TextField layoutX="249.0" layoutY="104.0" prefHeight="26.0" prefWidth="246.0" />
-                  <TextField layoutX="249.0" layoutY="158.0" prefHeight="26.0" prefWidth="246.0" />
-                  <Label layoutX="52.0" layoutY="109.0" prefHeight="16.0" prefWidth="124.0" text="Zookeper Host" />
-                  <Label layoutX="56.0" layoutY="163.0" prefHeight="16.0" prefWidth="120.0" text="Zookeper Port" />
                   <Button layoutX="510.0" layoutY="56.0" mnemonicParsing="false" onMouseClicked="#getTotalMessages" text="Refresh" />
                   <Label fx:id="noRecords" layoutX="248.0" layoutY="58.0" prefHeight="27.0" prefWidth="123.0" />
                   <Button layoutX="41.0" layoutY="313.0" mnemonicParsing="false" onMouseClicked="#switchToPrimary" text="Back" />

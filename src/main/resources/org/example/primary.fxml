@@ -56,7 +56,7 @@
     <center>
         <Pane prefHeight="200.0" prefWidth="1600.0" BorderPane.alignment="CENTER">
             <children>
-                <TextField fx:id="search" layoutX="-70.0" onAction="#filerTopics" prefHeight="34.0" prefWidth="397.0" translateX="138.0" translateY="50.0">
+                <TextField fx:id="search" layoutX="-70.0" onKeyPressed="#filterTopics" prefHeight="34.0" prefWidth="397.0" translateX="138.0" translateY="50.0">
                     <padding>
                         <Insets left="35.0" />
                     </padding>
@@ -139,7 +139,7 @@
                         </StackPane>
                     </children>
                 </GridPane>
-            <Button layoutX="511.0" layoutY="54.0" mnemonicParsing="false" text="Create" />
+            <Button layoutX="511.0" layoutY="54.0" mnemonicParsing="false" text="Create" onMouseClicked="#createTopic"/>
             </children>
         </Pane>
     </center>

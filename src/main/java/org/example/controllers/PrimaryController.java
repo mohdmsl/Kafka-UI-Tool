@@ -9,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.example.App;
 import org.example.controller.Database;
@@ -98,18 +99,10 @@ public class PrimaryController implements Initializable {
         MenuItem dataMenu = new MenuItem("display data");
         MenuItem deleteMenu = new MenuItem("delete Topic");
         topicInfo.setOnAction((event) -> {
-            try {
-                App.setRoot("topicInfo");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                new Utils().switchScene("topicInfo");
         });
         dataMenu.setOnAction(actionEvent -> {
-            try {
-                App.setRoot("secondary");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            new Utils().switchScene("secondary");
         });
         deleteMenu.setOnAction(event -> {
             String topic = topics.getSelectionModel().getSelectedItem();
@@ -161,11 +154,12 @@ public class PrimaryController implements Initializable {
             default:
                 throw new IllegalStateException("Unexpected value: " + Kafka.mechanism);
         }
+        utils = null;
         return config;
     }
 
     @FXML
-    private void filerTopics() {
+    private void filterTopics() {
         FilteredList<String> filteredData = new FilteredList<>(FXCollections.observableList(list));
         topics.setItems(filteredData);
         search.textProperty().addListener((observable, oldValue, newValue) ->
@@ -175,13 +169,20 @@ public class PrimaryController implements Initializable {
 
     private Predicate<String> createPredicate(String searchText) {
         return topic -> {
-            if (searchText == null || searchText.isEmpty()) return true;
+            if (searchText == null || searchText.isEmpty())
+                return true;
             return findTopics(topic, searchText);
         };
     }
 
     private boolean findTopics(String topic, String searchText) {
         return (topic.toLowerCase().contains(searchText.toLowerCase()));
+    }
+
+    @FXML
+    private void createTopic(){
+        Stage stage = new Stage();
+        new Utils().createNewScene("topiccreation", stage);
     }
 
 }

@@ -1,8 +1,10 @@
 package org.example.topic;
 
+import javafx.scene.control.Alert;
 import org.apache.kafka.clients.admin.*;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.TopicPartition;
+import org.example.Alerts;
 import org.example.utility.Utils;
 
 import java.util.*;
@@ -22,7 +24,7 @@ public class Topic {
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
-            e.printStackTrace();
+            new Alerts().createInformation(e, "Timeout while connecting to kafka server");
         }
         return list;
     }

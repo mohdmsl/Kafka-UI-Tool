@@ -27,7 +27,7 @@ public class Consumer {
     }
 
     public KafkaConsumer<String, String> getConsumerFromStartOffset(String topic) {
-        Properties config = new Utils().getKafkaProps();
+        Properties config = new Utils().getConfig();
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(config);
         int numberOfPartitions = new Topic(this.adminClient).getNumberOfPartitions(topic, config);
         List<TopicPartition> list = new ArrayList<>();

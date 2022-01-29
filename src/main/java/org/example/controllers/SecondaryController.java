@@ -4,33 +4,31 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.chart.*;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.text.Text;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.apache.kafka.common.TopicPartition;
 import org.example.Alerts;
 import org.example.App;
 import org.example.consumer.Consumer;
 import org.example.models.Data;
 import org.example.models.Kafka;
-import org.example.topic.Offsets;
 import org.example.topic.Topic;
 import org.example.utility.Utils;
 import org.json.JSONObject;
@@ -40,10 +38,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.util.*;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class SecondaryController implements Initializable {
@@ -71,13 +71,12 @@ public class SecondaryController implements Initializable {
     PieChart partitionChart;
     @FXML
     Button deleteButton;
+    @FXML
+    BorderPane mainPane;
 /*    @FXML
     TitledPane titledPane;*/
 
-
     String textFormat = "Text";
-
-
     String record;
     AdminClient adminClient;
     ObservableList<Data> dataList = null;
@@ -98,12 +97,34 @@ public class SecondaryController implements Initializable {
 
     @FXML
     private void switchToPrimary() throws IOException {
-        App.setRoot("primary");
+        new Utils().switchScene("secondary");
     }
 
     @FXML
     private void loadData() {
+
+        Task<Parent> createMainScene = new Task<Parent>() {
+            @Override
+            public Parent call() {
+                Parent root = ;
+
+                return root ;
+            }
+        };
+
+
+        Stage loadingStage = new Stage();
+        loadScreen(loadingStage);
+        createMainScene.setOnSucceeded(e -> {
+            mainPane.setDisable(false);
+            loadingStage.close();
+        });
+
+        new Thread(createMainScene).start();
+
+
         table.getItems().clear();
+        //  table.setItems( FXCollections.observableArrayList());
         Consumer consumer = new Consumer(adminClient);
         KafkaConsumer<String, String> kafkaConsumer = consumer.getConsumerFromStartOffset(Kafka.topicName);
         data.setCellValueFactory(new PropertyValueFactory<Data, String>("data"));
@@ -378,7 +399,12 @@ public class SecondaryController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    private void loadScreen(Stage stage) {
+        mainPane.setDisable(true);
+        Utils utils = new Utils();
+        utils.createNewScene("loader", stage);
 
     }
 
