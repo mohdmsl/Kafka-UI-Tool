@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+
+<HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.wl.controllers.LoaderController">
+   <children>
+      <StackPane prefHeight="400.0" prefWidth="254.0">
+         <children>
+            <Circle fx:id="circle1" fill="white" radius="120.0" stroke="#a718d9" strokeType="INSIDE" strokeWidth="10.0" style="-fx-stroke-dash-array: 60;">
+               <effect>
+                  <Glow />
+               </effect>
+            </Circle>
+            <Circle fx:id="circle2" fill="white" radius="80.0" stroke="#1891db" strokeDashOffset="5.0" strokeType="INSIDE" strokeWidth="10.0" style="-fx-stroke-dash-array: 40;">
+               <effect>
+                  <Glow />
+               </effect>
+            </Circle>
+            <Circle fx:id="circle3" fill="white" radius="40.0" stroke="#2a17dd" strokeDashOffset="3.0" strokeType="INSIDE" strokeWidth="7.0" style="-fx-stroke-dash-array: 30;">
+               <effect>
+                  <Glow />
+               </effect>
+            </Circle>
+         </children></StackPane>
+   </children>
+</HBox>

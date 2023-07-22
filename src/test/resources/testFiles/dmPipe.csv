@@ -1,0 +1,11 @@
+Cust_Id|Age|Gender|OwnHome|Married|Location|Salary|Children|History|Catalogs|AmountSpent
+247|Old|Female|Own|Single|Far|47500|0|High|6|755
+127|Middle|Male|Rent|Single|Close|63600|0|High|6|1318
+479|Young|Female|Rent|Single|Close|13500|0|Low|18|296
+475|Middle|Male|Own|Married|Close|85600|1|High|18|2436
+151|Middle|Female|Own|Single|Close|68400|0|High|12|1304
+320|Young|Male|Own|Married|Close|30400|0|Low|6|495
+804|Middle|Female|Rent|Single|Close|48100|0|Medium|12|782
+790|Middle|Male|Own|Single|Close|68400|0|High|18|1155
+43|Middle|Female|Own|Married|Close|51900|3|Low|6|158
+475|Old|Male|Own|Married|Far|80700|0|NA|18|3034

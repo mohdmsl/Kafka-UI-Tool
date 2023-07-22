@@ -1,0 +1,63 @@
+[{
+    "Age": "Old",
+    "AmountSpent": "3034",
+    "Catalogs": "18",
+    "Children": "0",
+    "Cust_Id": "475",
+    "Gender": "Male",
+    "History": "NA",
+    "Location": "Far",
+    "Married": "Married",
+    "OwnHome": "Own",
+    "Salary": 100
+  },{
+    
+    "Age": "Middle",
+    "AmountSpent": "1155",
+    "Catalogs": "18",
+    "Children": "0",
+    "Cust_Id": "790",
+    "Gender": "Male",
+    "History": "High",
+    "Location": "Close",
+    "Married": "Single",
+    "OwnHome": "Own",
+    "Salary": 180
+  },{
+   
+    "Age": "Old",
+    "AmountSpent": "755",
+    "Catalogs": "6",
+    "Children": "0",
+    "Cust_Id": "247",
+    "Gender": "Female",
+    "History": "High",
+    "Location": "Far",
+    "Married": "Single",
+    "OwnHome": "Own",
+    "Salary": 190
+  },{
+    "Age": "Old",
+    "AmountSpent": "3034",
+    "Catalogs": "18",
+    "Children": "0",
+    "Cust_Id": "475",
+    "Gender": "Male",
+    "History": "NA",
+    "Location": "Far",
+    "Married": "Married",
+    "OwnHome": "Own",
+    "Salary": 501
+  },{
+    "Age": "Middle",
+    "AmountSpent": "1155",
+    "Catalogs": "18",
+    "Children": "0",
+    "Cust_Id": "790",
+    "Gender": "Male",
+    "History": "High",
+    "Location": "Close",
+    "Married": "Single",
+    "OwnHome": "Own",
+    "Salary": 502
+  }]
