@@ -7,6 +7,8 @@ Add this line to VM Options:
 3. then create a file docker-compose.yml
 
 and put below content and save
+
+```
 ---
 version: '2'
 services:
@@ -55,7 +57,6 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-
-  
+```
 4. this will create a kafka broker with host: localhost:29092,localhost:39092
   
